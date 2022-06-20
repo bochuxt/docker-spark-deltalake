@@ -1,37 +1,22 @@
-### DockerHub
-[`metabase/spark`](https://hub.docker.com/r/metabase/spark)
-[![](https://images.microbadger.com/badges/version/metabase/spark.svg)](https://microbadger.com/images/metabase/spark)
+# docker-spark-deltalake
 
-### Available versions
+Fork of metabase docker-spark that adds support for DeltaLake
 
-* `metabase/spark:2.1.1`
-* `metabase/spark:3.2.1`
+## Usage
 
-### Build It
+1. docker-compose up --build
+2. Connect using [your favorite](https://snapcraft.io/datagrip) JDBC client
 
-```bash
-docker build -t metabase/spark:3.2.1 .
+```sql
+CREATE TABLE parquet.people
+USING DELTA
+LOCATION '/data/people'
 ```
 
-### Use It
-
-```bash
-docker run -p 10000:10000 \
-       --name sparksql-3.2.1 \
-       --rm \
-       -d metabase/spark:3.2.1
-```
-
-#### Run Metabase Tests
-
-```bash
-DRIVERS=sparksql clojure-X:dev:ee:ee-dev:drivers:drivers-dev:test
-```
-
-No additional env vars are needed.
-
-### Push It
-
-```bash
-docker push metabase/spark:3.2.1
-```
+## References
+[SQL Syntax](https://books.japila.pl/delta-lake-internals/sql/)
+[Why wget DeltaLake JAR](https://stackoverflow.com/questions/69862388/how-to-run-spark-sql-thrift-server-in-local-mode-and-connect-to-delta-using-jdbc)
+[Resolves this issue](https://github.com/delta-io/delta/issues/919)
+[Version mapping](https://docs.delta.io/latest/releases.html)
+[Additional Spark Parameters](https://docs.delta.io/latest/quick-start.html)
+[Creating tables](https://docs.databricks.com/delta/quick-start.html#language-sql)

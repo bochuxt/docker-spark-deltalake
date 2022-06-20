@@ -1,0 +1,8 @@
+version: "3.3"
+services:
+  deltalake:
+    build: .
+    ports:
+      - "10000:10000"
+    volumes:
+      - ./data:/data
