@@ -17,17 +17,15 @@ RUN wget "https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/${SPARK_A
 ENV SPARK_DIR "/spark/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}"
 
 # DeltaLake
-ENV DELTA_ARCHIVE delta-core_$SCALA_VERSION-$DELTA_VERSION.jar
-RUN wget https://repo1.maven.org/maven2/io/delta/delta-core_$SCALA_VERSION/$DELTA_VERSION/$DELTA_ARCHIVE && \
-    ls -lh $SPARK_DIR && \
-    mv $DELTA_ARCHIVE $SPARK_DIR/jars/ && \
-    ls -lh $SPARK_DIR/jars
+RUN wget https://repo1.maven.org/maven2/io/delta/delta-core_$SCALA_VERSION/$DELTA_VERSION/delta-core_$SCALA_VERSION-$DELTA_VERSION.jar -P $SPARK_DIR/jars/ && \
+    wget https://repo1.maven.org/maven2/io/delta/delta-storage/$DELTA_VERSION/delta-storage-$DELTA_VERSION.jar -P $SPARK_DIR/jars/
 
 EXPOSE 10000
+ENV MEM 2048m
 
 ENTRYPOINT java \
  -Duser.timezone=Etc/UTC \
- -Xmx512m \
+ -Xmx$MEM \
  -cp "${SPARK_DIR}/conf:${SPARK_DIR}/jars/*" \
  org.apache.spark.deploy.SparkSubmit \
  --master local[8] \
@@ -38,5 +36,6 @@ ENTRYPOINT java \
  --conf spark.eventLog.enabled=false \
  --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2 \
  --name "Thrift JDBC/ODBC Server" \
- --executor-memory 512m \
+ --executor-memory $MEM \
  spark-internal
+

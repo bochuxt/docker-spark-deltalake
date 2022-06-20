@@ -8,10 +8,25 @@ Fork of metabase docker-spark that adds support for DeltaLake
 2. Connect using [your favorite](https://snapcraft.io/datagrip) JDBC client
 
 ```sql
-CREATE TABLE parquet.people
-USING DELTA
-LOCATION '/data/people'
+select 1;
+
+create table person
+(
+    id   INT,
+    name STRING
+);
+
+insert into person (id, name) values (1, 'Brent');
+
+select * from person;
+
+create table delta.`/data/peopleV1` using delta as
+select * from person;
+
+select count(*) from delta.`/data/peopleV1`;
 ```
+
+3. Observe `1`
 
 ## References
 [SQL Syntax](https://books.japila.pl/delta-lake-internals/sql/)

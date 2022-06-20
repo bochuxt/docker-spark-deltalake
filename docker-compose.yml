@@ -2,6 +2,7 @@ version: "3.3"
 services:
   deltalake:
     build: .
+#    image: metabase/spark:3.2.1
     ports:
       - "10000:10000"
     volumes:
