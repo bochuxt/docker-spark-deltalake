@@ -1,5 +1,7 @@
 # docker-spark-deltalake
 
+https://tabular.io/blog/docker-spark-and-iceberg/
+
 Fork of metabase docker-spark that adds support for DeltaLake
 
 ## Usage
